@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csc.qa.dao.QuestionDAO">
+    <resultMap id="BaseResultMap" type="com.csc.qa.entity.Question">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="studentId" property="studentid" jdbcType="INTEGER"/>
+        <result column="teacherId" property="teacherid" jdbcType="INTEGER"/>
+        <result column="answer" property="answer" jdbcType="VARCHAR"/>
+        <result column="studentScore" property="studentscore" jdbcType="INTEGER"/>
+        <result column="teacherScore" property="teacherscore" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="keyword" property="keyword" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, content, studentId, teacherId, answer, studentScore, teacherScore, status, keyword
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from question
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByStudentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from question
+        where studentId = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectByTeacherId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from question
+        where teacherId = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM question
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.csc.qa.entity.Question">
+        INSERT INTO question (id, content, studentId,
+                              teacherId, answer, studentScore,
+                              teacherScore, status, keyword
+        )
+        VALUES (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{studentid,jdbcType=INTEGER},
+                #{teacherid,jdbcType=INTEGER}, #{answer,jdbcType=VARCHAR}, #{studentscore,jdbcType=INTEGER},
+                #{teacherscore,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, #{keyword,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.csc.qa.entity.Question" useGeneratedKeys="true" keyProperty="id">
+        insert into question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="studentid != null">
+                studentId,
+            </if>
+            <if test="teacherid != null">
+                teacherId,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+            <if test="studentscore != null">
+                studentScore,
+            </if>
+            <if test="teacherscore != null">
+                teacherScore,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="keyword != null">
+                keyword,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="studentid != null">
+                #{studentid,jdbcType=INTEGER},
+            </if>
+            <if test="teacherid != null">
+                #{teacherid,jdbcType=INTEGER},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="studentscore != null">
+                #{studentscore,jdbcType=INTEGER},
+            </if>
+            <if test="teacherscore != null">
+                #{teacherscore,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=CHAR},
+            </if>
+            <if test="keyword != null">
+                #{keyword,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.csc.qa.entity.Question">
+        update question
+        <set>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="studentid != null">
+                studentId = #{studentid,jdbcType=INTEGER},
+            </if>
+            <if test="teacherid != null">
+                teacherId = #{teacherid,jdbcType=INTEGER},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="studentscore != null">
+                studentScore = #{studentscore,jdbcType=INTEGER},
+            </if>
+            <if test="teacherscore != null">
+                teacherScore = #{teacherscore,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=CHAR},
+            </if>
+            <if test="keyword != null">
+                keyword = #{keyword,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.csc.qa.entity.Question">
+        UPDATE question
+        SET content      = #{content,jdbcType=VARCHAR},
+            studentId    = #{studentid,jdbcType=INTEGER},
+            teacherId    = #{teacherid,jdbcType=INTEGER},
+            answer       = #{answer,jdbcType=VARCHAR},
+            studentScore = #{studentscore,jdbcType=INTEGER},
+            teacherScore = #{teacherscore,jdbcType=INTEGER},
+            status       = #{status,jdbcType=CHAR},
+            keyword      = #{keyword,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="increaseStatusByPrimaryKeyAndTeacherId" parameterType="java.lang.Integer">
+        update question
+        set `status` = '1', teacherid = #{teacherid}
+        where id = #{id} and `status` = '0'
+    </update>
+</mapper>
